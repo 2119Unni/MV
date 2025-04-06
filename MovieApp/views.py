@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .form import MovieForm
+from .form import MovieForm, CustomUserForm
 from . models import Movie
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def index(request):
@@ -35,3 +36,17 @@ def Delete(request,id):
         DE.delete()
         return redirect('/')
     return render(request,'delete.html')
+
+def register_page(request):
+    if request.method != 'POST':
+        form = CustomUserForm()
+    else:
+        form = CustomUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    context = {"form": form}
+    return render(request,'register.html',context)
+
+def loginpage(request):
+    return render(request,'login.html')
