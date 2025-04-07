@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .form import MovieForm, CustomUserForm
+from .forms import MovieForm, CustomUserForm
 from . models import Movie
 from django.contrib.auth.forms import UserCreationForm
 
