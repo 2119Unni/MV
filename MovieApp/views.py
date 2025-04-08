@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from .forms import MovieForm, CustomUserForm
 from . models import Movie
@@ -38,15 +39,28 @@ def Delete(request,id):
     return render(request,'delete.html')
 
 def register_page(request):
-    if request.method != 'POST':
-        form = CustomUserForm()
-    else:
+    if request.method == 'POST':
         form = CustomUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
-    context = {"form": form}
-    return render(request,'register.html',context)
-
+            user = form.save()
+            login(request, user)
+            return redirect('MovieApp:login')
+    else:
+        form = CustomUserForm()
+    return render(request, 'register.html', {'form': form})
+# def register_page(request):
+#     if request.method != 'POST':
+#         form = CustomUserForm()
+#     else:
+#         form = CustomUserForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')
+#     context = {"form": form}
+#     return render(request,'register.html',context)
 def loginpage(request):
-    return render(request,'login.html')
+    username = request.user.username if request.user.is_authenticated else 'Guest'
+    return render(request, 'login.html', {'username': username})
+
+# def loginpage(request):
+#     return render(request,'login.html')

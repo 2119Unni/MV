@@ -1,20 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block body %}
-
-<h1> User Register Form</h1>
-
-<form method="post" action="">
+<h2>User Registration</h2>
+<form method="post">
     {% csrf_token %}
-    <h3>REGISTER</h3>
-    <h5>{{form.username.label}}</h5>
-    {{form.username}}
-    <h5>{{form.email.label}}</h5>
-    {{form.email}}
-    <h5>{{form.password1.label}}</h5>
-    {{form.password1}}
-    <h5>{{form.password2.label}}</h5>
-    {{form.password2}}
-    <input type="submit" name="Create User">
+    {{ form.as_p }}
+    <button type="submit">Register</button>
 </form>
-
 {% endblock %}
