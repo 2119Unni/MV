@@ -1,1 +1,9 @@
-Body{Background-color : Gray;}
+Body{
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 10px;
+    display: flex;
+    background: #626cd6;
+    justify-content: center;
+    align-items: center;
+}
