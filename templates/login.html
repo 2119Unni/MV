@@ -1,27 +1,32 @@
 {% extends 'base.html' %}
 {% block body %}
-
-<h1> Welcome to  {{ username }}</h1>
-<div class="login_form">
-    <!-- Login form container -->
-    <form action="#">
-      <h3>Log in with</h3>
-      <!-- Email input box -->
-      <div class="input_box">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter email address" required />
-      </div>
-      <!-- Paswwrod input box -->
-      <div class="input_box">
-        <div class="password_title">
-          <label for="password">Password</label>
+  <h1 class="text-center"> Welcome </h1>
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="login_form">
+      <!-- Login form container -->
+      <form method="post">
+        {% csrf_token %}
+        <h3>Log in with</h3>
+        <!-- Email input box -->
+          {% for messages in messages %}
+            <label><h2>{{messages}}</h2></label>
+          {% endfor %}
+        <div class="input_box">
+          <label >USER NAME</label>
+          <input type="text" name="username" placeholder="Enter Username"/>
         </div>
-        <input type="password" id="password" placeholder="Enter your password" required />
-      </div>
-       <!-- Login button -->
-      <button type="submit">Log In</button>
-      <p class="sign_up">Don't have an account? <a href="#">Sign up</a></p>
-    </form>
-</div>
+        <!-- Paswwrod input box -->
+        <div class="input_box">
+          <div class="password_title">
+            <label >PASSWORD</label>
+          </div>
+          <input type="password" name="password" placeholder="Enter your password"/>
+        </div>
+         <!-- Login button -->
+        <button type="submit">Log In</button>
 
+        <p class="sign_up">Don't have an account? <a href="{% url 'MovieApp:register' %}">Register</a></p>
+      </form>
+  </div>
+</div>
 {% endblock %}

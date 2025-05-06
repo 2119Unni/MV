@@ -4,7 +4,10 @@
 <h2>User Registration</h2>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+        {% for messages in messages %}
+            <p>{{messages}}</p>
+        {% endfor %}
+    {{form.as_p}}
     <button type="submit">Register</button>
 </form>
 {% endblock %}

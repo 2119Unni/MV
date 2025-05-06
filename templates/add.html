@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="text" name="name" placeholder="Enter your movie name">
-    <input type="text" name="desc" placeholder="Enter your movie details">
-    <input type="text" name="year" placeholder="Enter your movie year">
-    <input type="file" name="img" >
-    <input type="submit">
-</form>
+  <h1 class="text-center"> Add New Movie </h1>
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="login_form">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input_box">
+          <input type="text" name="name" placeholder="Enter your movie name">
+        </div>
+        <div class="input_box">
+          <input type="text" name="desc" placeholder="Enter your movie details">
+        </div>
+        <div class="input_box">
+          <input type="text" name="year" placeholder="Enter your movie year">
+        </div>
+        <div>
+            <input type="file" name='img'>
+        </div>
+        <div>
+        <button type="submit">SUBMIT</button>
+        </div>
+      </form>
+  </div>
+</div>
 
 {% endblock %}

@@ -1,28 +1,32 @@
-from django.contrib.auth import login
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
 from .forms import MovieForm, CustomUserForm
-from . models import Movie
-from django.contrib.auth.forms import UserCreationForm
+from .models import Movie, Review
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 def index(request):
     movie=Movie.objects.all()
     return render(request,'index.html',{'M':movie})
 
-def detail(request,movie_id):
-    movie=Movie.objects.get(id=movie_id)
-    return render(request,"detail.html",{'M':movie})
+def detail(request,id):
+    movie=Movie.objects.get(id=id)
+    review=Review.objects.filter(movie=id)
+    return render(request,"detail.html",{'R': review, 'M': movie})
 
+@login_required(login_url='MovieApp:login')
 def add_movie(request):
     if request.method == "POST":
-        name=request.POST.get('name',)
+        user = request.user
+        name = request.POST.get('name', )
         desc = request.POST.get('desc', )
         year = request.POST.get('year', )
-        img = request.FILES['img']
-        movie=Movie(name=name,desc=desc,year=year,img=img)
+        img = request.FILES.get('img')
+        movie=Movie(user= user,name=name,desc=desc,year=year,img=img)
         movie.save()
     return render(request,'add.html')
 
+@login_required(login_url='MovieApp:login')
 def Update(request,id):
     movie=Movie.objects.get(id=id)
     FM2=MovieForm(request.POST or None, request.FILES, instance=movie)
@@ -30,37 +34,70 @@ def Update(request,id):
         FM2.save()
         return redirect('/')
     return render(request,'edit.html',{'FM2':FM2,'movie':movie})
-
+@login_required(login_url='MovieApp:login')
 def Delete(request,id):
     if request.method == "POST":
-        DE=Movie.objects.get(id=id)
-        DE.delete()
-        return redirect('/')
+        DE = Movie.objects.get(id=id)
+        N = request.user
+        if DE.user == N:
+            DE.delete()
+            return redirect('/')
+        else:
+            messages.info(request, 'You are not authorized to delete this movie')
     return render(request,'delete.html')
 
 def register_page(request):
     if request.method == 'POST':
         form = CustomUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
+            form.save()
             return redirect('MovieApp:login')
     else:
         form = CustomUserForm()
     return render(request, 'register.html', {'form': form})
-# def register_page(request):
-#     if request.method != 'POST':
-#         form = CustomUserForm()
-#     else:
-#         form = CustomUserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login')
-#     context = {"form": form}
-#     return render(request,'register.html',context)
-def loginpage(request):
-    username = request.user.username if request.user.is_authenticated else 'Guest'
-    return render(request, 'login.html', {'username': username})
 
-# def loginpage(request):
-#     return render(request,'login.html')
+def loginpage(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        if request.method == "POST":
+            UN = request.POST.get('username')
+            PS = request.POST.get('password')
+            user= authenticate(request, username=UN,password=PS)
+            if user is not None:
+                login(request,user)
+                return redirect('/')
+            else:
+                messages.info(request,'User credentials does not exist')
+    return render(request, 'login.html')
+def logoutpage(request):
+    logout(request)
+    return redirect('MovieApp:login')
+@login_required(login_url='MovieApp:login')
+def review_page(request,id):
+    DE = Movie.objects.get(id=id)
+    if request.method == "POST":
+        U = request.user
+        caption = request.POST.get('caption', )
+        review = request.POST.get('review', )
+        movie = DE.name
+        RE = Review(user=U, caption=caption, review=review, movie=Movie.objects.get(name=movie))
+        au=Review.objects.filter(movie=id).filter(user=U)
+        if au.exists():
+            messages.info(request, 'You have already submitted a Review')
+        else:
+            RE.save()
+            return redirect('/')
+    return render(request, 'reviewpage.html')
+
+@login_required(login_url='MovieApp:login')
+def re_delete(request,id):
+    if request.method == "POST":
+        DE = Review.objects.get(id=id)
+        N = request.user
+        if DE.user == N:
+            DE.delete()
+            return redirect('/')
+        else:
+            messages.info(request, 'You are not authorized to delete this movie')
+    return render(request,'delete.html')
