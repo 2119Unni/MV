@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<form method="POST">
+    {% csrf_token %}
+    Are you sure You want to Delete this Movie
+    <input type="submit"><br>
+    {% for messages in messages %}
+       <label><h2>{{messages}}</h2></label>
+    {% endfor %}
+</form>
+{% endblock %}

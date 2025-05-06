@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block body %}
+  <h1 class="text-center"> Write A Review </h1>
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="login_form">
+      <form method="post">
+        {% csrf_token %}
+          {% for messages in messages %}
+            <label><h2>{{messages}}</h2></label>
+          {% endfor %}
+        <div class="input_box">
+          <label >Give A Caption</label>
+          <input type="text" name="caption"/>
+        </div>
+        <div class="input_box">
+          <label >Review</label>
+          <input type="text" name="review"/>
+        </div>
+        <label >SUBMIT</label>
+        <button type="submit">SUBMIT</button>
+      </form>
+  </div>
+</div>
+{% endblock %}
