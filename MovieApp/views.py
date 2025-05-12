@@ -29,19 +29,26 @@ def add_movie(request):
 @login_required(login_url='MovieApp:login')
 def Update(request,id):
     inst = get_object_or_404(Movie,id=id)
+    N = request.user
     if request.method=="POST":
         FM2=MovieForm(request.POST, request.FILES, instance=inst)
-        if FM2.is_valid():
-            FM2.save()
-            return redirect('/')
+        if inst.user == N:
+            if FM2.is_valid():
+                FM2.save()
+                return redirect('/')
+        else:
+            FM2 = MovieForm(instance=inst)
+            print(" No Permission ")
+            messages.info(request, 'You are not authorized')
     else:
         FM2 = MovieForm(instance=inst)
     return render(request,'edit.html',{'FM2':FM2,'movie':inst})
 @login_required(login_url='MovieApp:login')
 def Delete(request,id):
+    N = request.user
     if request.method == "POST":
         DE = Movie.objects.get(id=id)
-        N = request.user
+        print(DE.user, N)
         if DE.user == N:
             DE.delete()
             return redirect('/')
@@ -95,12 +102,13 @@ def review_page(request,id):
 
 @login_required(login_url='MovieApp:login')
 def re_delete(request,id):
+    N = request.user
     if request.method == "POST":
         DE = Review.objects.get(id=id)
-        N = request.user
+        print(DE.user,N)
         if DE.user == N:
             DE.delete()
             return redirect('/')
         else:
             messages.info(request, 'You are not authorized to delete this movie')
-    return render(request,'delete.html')
+    return render(request,'re_delete.html')

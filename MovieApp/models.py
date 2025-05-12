@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 # Create your models here.
 class Movie(models.Model):
-    user = models.CharField(max_length=250, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
     desc = models.TextField(null=True, blank=True)
     year = models.IntegerField(blank=True)
