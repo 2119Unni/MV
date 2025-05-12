@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .forms import MovieForm, CustomUserForm
 from .models import Movie, Review
 from django.contrib.auth.decorators import login_required
@@ -28,12 +28,15 @@ def add_movie(request):
 
 @login_required(login_url='MovieApp:login')
 def Update(request,id):
-    movie=Movie.objects.get(id=id)
-    FM2=MovieForm(request.POST or None, request.FILES, instance=movie)
-    if FM2.is_valid():
-        FM2.save()
-        return redirect('/')
-    return render(request,'edit.html',{'FM2':FM2,'movie':movie})
+    inst = get_object_or_404(Movie,id=id)
+    if request.method=="POST":
+        FM2=MovieForm(request.POST, request.FILES, instance=inst)
+        if FM2.is_valid():
+            FM2.save()
+            return redirect('/')
+    else:
+        FM2 = MovieForm(instance=inst)
+    return render(request,'edit.html',{'FM2':FM2,'movie':inst})
 @login_required(login_url='MovieApp:login')
 def Delete(request,id):
     if request.method == "POST":
