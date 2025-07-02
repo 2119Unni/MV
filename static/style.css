@@ -9,13 +9,21 @@ Body{
     align-items: center;
 }
 
-
 /* Resetting default styling and setting font-family */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Montserrat", sans-serif;
+}
+/*nav-bar style setting*/
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
+
+.msg{
+    display:inline-block;
+    position:relative;
 }
 /* Login form styling */
 .login_form {

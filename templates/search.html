@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<h1 class="text-center"><u>MY MOVIES</u></h1>
+<h1 class="text-center my_search_text">You have searched for :<b>"{{query}}"</b></h1>
 <div class="container">
+    {% if M %}
     <div class="row">
         {% for i in M %}
         <div class="col-md-6">
@@ -17,6 +18,11 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="raw mx_auto">
+        <p class="text-center my_search_text"> 0 result found</p>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}
