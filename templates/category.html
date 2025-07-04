@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
-
-<h1 class="text-center">You have selected category :<b>"{{category}}"</b></h1>
+<div class="about-section">
+    <img class="card-img-top" src="{{category.image.url}}" height="650px" alt="Card image cap">
+    <h1>You have selected category :<b>"{{category.name}}"</b></h1>
+    <p>"{{category.description}}"</p>
+</div>
 <div class="container">
     {% if M %}
     <div class="row">

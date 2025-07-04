@@ -21,6 +21,13 @@ Body{
   display: block;
 }
 
+.about-section {
+  padding: 100px;
+  text-align: center;
+  background-color: #474e5d;
+  color: white;
+}
+
 .msg{
     display:inline-block;
     position:relative;
