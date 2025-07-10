@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1 class="text-center"> Welcome </h1>
+<div class="d-flex justify-content-center align-items-center h-100">
+    <div class="login_form">
+        <!-- Login form container -->
+        {% if request.user == 'AnonymousUser' %}
+        <a href="{% url 'MovieApp:login' %}">Login</a>
+        {% else %}
+        <a href="{% url 'MovieApp:login' %}">LogOut</a>
+        {% endif %}
+        <a href="{% url 'MovieApp:register' %}">Register</a>
+    </div>
+</div>
+{% endblock %}

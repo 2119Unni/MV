@@ -107,7 +107,7 @@ def loginpage(request):
 
 def logoutpage(request):
     logout(request)
-    return redirect('MovieApp:login')
+    return redirect('/')
 
 
 @login_required(login_url='MovieApp:login')

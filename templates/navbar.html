@@ -30,9 +30,13 @@
                 <input class="form-control my-2" type="search" placeholder="Search" name='q' aria-label="Search">
                 <button class="btn btn-primary my-2" type="submit">Search</button>
             </form>
+            {% if request.user.is_authenticated %}
             <span><a class="navbar-brand">Hello, {{request.user}}</a></span>
             <span><a href="{% url 'MovieApp:logout' %}">Logout</a></span>
-
+            <!--            -->
+            {% else %}
+            <a href="{% url 'MovieApp:login' %}">Login</a>
+            {% endif %}
         </div>
     </div>
 </nav>
